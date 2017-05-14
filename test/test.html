@@ -1,0 +1,46 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+  integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+  integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+  crossorigin=""></script>
+<script src="leaflet.ChineseTmsProviders.js" type="text/javascript"></script>
+<style type="text/css">
+html,body {height: 100%; overflow: hidden;}
+#map {height: 100%;}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var init_lat = 39.94942;
+var init_lng = 116.32838;
+
+var map = new L.Map("map", {
+  center: [init_lat, init_lng],
+  zoom: 3
+});
+
+//L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom: 17}).addTo(map);
+
+L.tileLayer.chinaProvider('GaoDe.Normal.Map', {maxZoom: 18, minZoom: 5}).addTo(map);
+
+L.tileLayer("http://127.0.0.1:8031/v1/world/{z}/{x}/{y}/tile.png", {maxZoom: 25}).addTo(map);
+
+map.setView(new L.LatLng(init_lat, init_lng), 8);
+
+var marker = L.marker([init_lat, init_lng]).addTo(map);
+
+marker.bindPopup("<b>Hello you!</b><br>I'm popup.");
+
+function onMapClick(e) {
+  alert("You clicked the map at " + e.latlng);
+}
+
+map.on('click', onMapClick);
+
+</script>
+</body>
+</html>
