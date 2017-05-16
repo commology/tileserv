@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
   crossorigin=""></script>
-<script src="leaflet.ChineseTmsProviders.js" type="text/javascript"></script>
+<script src="javascripts/leaflet.ChineseTmsProviders.js" type="text/javascript"></script>
 <style type="text/css">
 html,body {height: 100%; overflow: hidden;}
 #map {height: 100%;}
@@ -20,20 +20,24 @@ var init_lng = 116.32838;
 
 var map = new L.Map("map", {
   center: [init_lat, init_lng],
-  zoom: 3
+  zoom: 5
 });
 
-//L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom: 17}).addTo(map);
+//L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>",
+//maxZoom: 17}).addTo(map);
 
-L.tileLayer.chinaProvider('GaoDe.Normal.Map', {maxZoom: 18, minZoom: 5}).addTo(map);
+L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+attribution: "&copy; <a href='http://lbs.amap.com/home/terms/'>高德地图 AMap(AutoNavi)</a>",
+maxZoom: 18, minZoom: 5}).addTo(map);
 
-L.tileLayer("http://127.0.0.1:8031/v1/world/{z}/{x}/{y}/tile.png", {maxZoom: 25}).addTo(map);
+L.tileLayer("http://tiles.commology.com/v1/world/{z}/{x}/{y}/tile.png", {attribution: "&copy Tiles by Commology", maxZoom: 25}).addTo(map);
 
-map.setView(new L.LatLng(init_lat, init_lng), 8);
+map.setView(new L.LatLng(init_lat, init_lng), 7);
 
 var marker = L.marker([init_lat, init_lng]).addTo(map);
 
-marker.bindPopup("<b>Hello you!</b><br>I'm popup.");
+marker.bindPopup("<b>Hello you!</b><br>I'm from Beijing.");
 
 function onMapClick(e) {
   alert("You clicked the map at " + e.latlng);
