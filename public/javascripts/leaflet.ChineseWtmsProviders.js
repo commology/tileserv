@@ -69,6 +69,17 @@ L.TileLayer.ChinaProvider.providers = {
 };
 
 L.tileLayer.chinaProvider = function(type, options) {
-    return new L.TileLayer.ChinaProvider(type, options);
+    prefix = "Baidu.";
+    prefixIndex = type.indexOf(prefix);
+    if(prefixIndex >= 0)
+        return new L.TileLayer.BaiduLayer(type.substr(prefixIndex + prefix.length), options);
+
+    prefix = "Tencent.";
+    prefixIndex = type.indexOf(prefix);
+    if(prefixIndex >= 0)
+        return new L.TileLayer.TencentLayer(type.substr(prefixIndex + prefix.length), options);
+
+    else
+        return new L.TileLayer.ChinaProvider(type, options);
 };
 
