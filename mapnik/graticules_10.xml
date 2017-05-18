@@ -6,7 +6,7 @@
       <LineSymbolizer stroke="rgb(212,212,212)" stroke-width="3" stroke-opacity="0.5" stroke-dasharray="5,10" />
     </Rule>
   </Style>
-  <Layer name="graticules_30" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
+  <Layer name="graticules_10" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
     <StyleName>My Style</StyleName>
     <Datasource>
       <Parameter name="type">shape</Parameter>

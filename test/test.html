@@ -22,6 +22,8 @@
 <script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
 <script src="leaflet.TencentLayer.js" type="text/javascript"></script>
 <script src="leaflet.ChineseWtmsProviders.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js" type="text/javascript"></script>
 <style type="text/css">
 html,body,#map {
   width: 100%;
@@ -109,6 +111,40 @@ var grat10Layer = L.tileLayer(grat10Url, {
     attribution: ''
 });
 
+function addGibsLayer(imageryLayer, format) {
+
+format = format || 'png';
+
+//var gibsUrl = "http://map1{s}.vis.earthdata.nasa.gov/wmts-webmerc/{imageryLayer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpg";
+var gibsUrl = "http://gibs.earthdata.nasa.gov/wmts/epsg3857/best/{imageryLayer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.{format}";
+var gibsLayer = L.tileLayer(gibsUrl, {
+    imageryLayer: imageryLayer,
+    tileMatrixSet: "GoogleMapsCompatible_Level9",
+    maxZoom: 9,
+    time: "2013-11-04",
+    tileSize: 256,
+    format: format,
+    subdomains: "abc",
+    noWrap: true,
+    continuousWorld: true,
+    // Prevent Leaflet from retrieving non-existent tiles on the
+    // borders.
+    bounds: [
+        [-85.0511287776, -179.999999975],
+        [85.0511287776, 179.999999975]
+    ],
+    attribution:
+        "<a href='https://wiki.earthdata.nasa.gov/display/GIBS'>" +
+        "NASA EOSDIS GIBS" +
+        "</a>"
+});
+return gibsLayer;
+
+}
+
+var gibsTerraTrueColorLayer = addGibsLayer('MODIS_Terra_CorrectedReflectance_TrueColor', 'jpg');
+var gibsAquaTrueColorLayer  = addGibsLayer('MODIS_Aqua_CorrectedReflectance_TrueColor', 'jpg');
+
 var tneUrl = 'http://127.0.0.1:8111/world/{z}/{x}/{y}/tile.png';
 //var tneUrl = 'http://tiles.commology.com/v1/world/{z}/{x}/{y}/tile.png';
 var tneLayer = L.tileLayer(tneUrl, {
@@ -127,10 +163,12 @@ var baseMaps = {
 };
 
 var overlayMaps = {
-    "Graticules 30": grat30Layer,
-    "Graticules 10": grat10Layer,
+    "USGS Elev.": nmapLayer,
     "Natural Earth I": tneLayer,
-    "USGS Elev.": nmapLayer
+    "Terra TrueColor": gibsTerraTrueColorLayer,
+    "Aqua TrueColor": gibsAquaTrueColorLayer,
+    "Graticules 30": grat30Layer,
+    "Graticules 10": grat10Layer
 };
 
 
