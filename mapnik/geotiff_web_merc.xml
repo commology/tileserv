@@ -3,16 +3,15 @@
 <Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
   <Style name="My Style">
     <Rule>
-      <PolygonSymbolizer fill="#f2eff9" />
-      <LineSymbolizer stroke="rgb(50%,50%,100%)" stroke-width="0.5" />
-      <RasterSymbolizer/>
+      <RasterSymbolizer opacity="0.5" />
     </Rule>
   </Style>
   <Layer name="world" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
     <StyleName>My Style</StyleName>
     <Datasource>
       <Parameter name="type">gdal</Parameter>
-      <Parameter name="file">NE1_LR_LC_SR_W_DR-google_merc.tif</Parameter>
+      <Parameter name="file">../data/NE1_LR_LC_SR-web_merc-transparent.tif</Parameter>
+      <Parameter name="nodata">0</Parameter>
     </Datasource>
   </Layer>
 </Map>

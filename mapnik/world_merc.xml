@@ -3,7 +3,7 @@
 <Map srs="+proj=merc +lon_0=0 +lat_ts=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs ">
   <Style name="My Style">
     <Rule>
-      <PolygonSymbolizer fill="#f2eff9" opacity="0.5" />
+      <PolygonSymbolizer fill="#f2eff9" />
       <LineSymbolizer stroke="rgb(50%,50%,100%)" stroke-width="0.5" />
     </Rule>
   </Style>

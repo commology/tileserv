@@ -32,3 +32,6 @@ npm-debug.log
 # yarn lock
 yarn.lock
 
+# data
+data/*.tif
+

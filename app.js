@@ -18,18 +18,24 @@ var dependency = require('tilestrata-dependency');
 
 var strata = tilestrata();
 
-strata.layer('world')
-  .route('tile@2x.png')
-    .use(mapnik({
-       pathname: 'mapnik/world_merc.xml',
-       tileSize: 512,
-       scale: 2
-    }))
-  .route('tile.png')
-    .use(dependency('world', 'tile@2x.png'))
-    .use(sharp(function(image, sharp) {
-      return image.resize(256);
-}));
+function addStrataLayer(name, mapnik_xml_pathname) {
+strata.layer(name)
+    .route('tile@2x.png')
+        .use(mapnik({
+            pathname: mapnik_xml_pathname,
+            tileSize: 512,
+            scale: 2
+        }))
+    .route('tile.png')
+        .use(dependency(name, 'tile@2x.png'))
+        .use(sharp(function(image, sharp) {
+            return image.resize(256);
+        }));
+}
+
+addStrataLayer('world', 'mapnik/geotiff_web_merc.xml');
+addStrataLayer('grat30', 'mapnik/graticules_30.xml');
+addStrataLayer('grat10', 'mapnik/graticules_10.xml');
 
 
 // view engine setup

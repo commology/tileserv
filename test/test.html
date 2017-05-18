@@ -1,41 +1,162 @@
 <html>
 <head>
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' >
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
   integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
   crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
   crossorigin=""></script>
-<script src="javascripts/leaflet.ChineseTmsProviders.js" type="text/javascript"></script>
+<!--
+<script src="http://api.map.baidu.com/api?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&s=1" type="text/javascript"></script>
+<script src="baidu.js" type="text/javascript"></script>
+-->
+<script src="https://api.map.baidu.com/getscript?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&services=&t=20170511202040"></script>
+<script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
+<script src="leaflet.TencentLayer.js" type="text/javascript"></script>
+<script src="leaflet.ChineseWtmsProviders.js" type="text/javascript"></script>
 <style type="text/css">
-html,body {height: 100%; overflow: hidden;}
-#map {height: 100%;}
+html,body,#map {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+<title>Yet Another Map ...</title>
+<link rel='icon' href='/IoT/favicon.ico' type='image/x-icon' />
+<link rel='shortcut icon' href='/IoT/favicon.ico' type='image/x-icon' />
 </style>
 </head>
 <body>
 <div id="map"></div>
 <script>
+var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var osmLayer = L.tileLayer(osmUrl, {
+    id: 'osm',
+    maxZoom: 17,
+    detectRetina: true,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+});
+
+var gmapStr = 'Google.Normal.Map';
+var gmapLayer = L.tileLayer.chinaProvider(gmapStr, {
+    id: 'gmap',
+    maxZoom: 18,
+    detectRetina: true,
+    attribution: '&copy; <a href="https://www.google.cn/maps/">Google</a>'
+});
+
+var amapStr = 'GaoDe.Normal.Map';
+var amapLayer = L.tileLayer.chinaProvider(amapStr, {
+    id: 'amap',
+    maxZoom: 18,
+    detectRetina: true,
+    attribution: '&copy; <a href="http://lbs.amap.com/home/terms/">高德地图 AMap(AutoNavi)</a> - GS(2016)710'
+});
+
+var bmapStr = 'Baidu.Normal.Map';
+var bmapLayer = L.tileLayer.chinaProvider(bmapStr, {
+    id: 'bmap',
+    minZoom: 3,
+    maxZoom: 19,
+    detectRetina: true,
+    attribution: '&copy; <a href="http://lbsyun.baidu.com/index.php?title=open/law">Baidu</a> - GS(2016)2089; Data &copy; 长地万方'
+});
+
+var qmapStr = 'Tencent.Normal.Map';
+var qmapLayer = L.tileLayer.chinaProvider(qmapStr, {
+    id: 'qmap',
+    minZoom: 3,
+    maxZoom: 19,
+    detectRetina: true,
+    attribution: '&copy; <a href="http://lbs.qq.com/terms.html">Tencent</a> - GS(2016)930; Data &copy; NavInfo'
+});
+
+var nmapUrl = 'http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}';
+var nmapUrl = 'http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}';
+var nmapLayer = L.tileLayer(nmapUrl, {
+    id: 'nmap',
+    minZoom: 1,
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer" target="_blank">USGS</a> Elevation'
+});
+
+var grat30Url = 'http://127.0.0.1:8111/grat30/{z}/{x}/{y}/tile.png';
+//var grat30Url = 'http://tiles.commology.com/v1/grat30/{z}/{x}/{y}/tile.png';
+var grat30Layer = L.tileLayer(grat30Url, {
+    id: 'grat30',
+    maxZoom: 25,
+    detectRetina: true,
+    attribution: ''
+});
+
+var grat10Url = 'http://127.0.0.1:8111/grat10/{z}/{x}/{y}/tile.png';
+//var grat10Url = 'http://tiles.commology.com/v1/grat10/{z}/{x}/{y}/tile.png';
+var grat10Layer = L.tileLayer(grat10Url, {
+    id: 'grat10',
+    maxZoom: 25,
+    detectRetina: true,
+    attribution: ''
+});
+
+var tneUrl = 'http://127.0.0.1:8111/world/{z}/{x}/{y}/tile.png';
+//var tneUrl = 'http://tiles.commology.com/v1/world/{z}/{x}/{y}/tile.png';
+var tneLayer = L.tileLayer(tneUrl, {
+    id: 'tne',
+    maxZoom: 25,
+    detectRetina: true,
+    attribution: '&#x269D; Tiles by FynnBear'
+});
+
+var baseMaps = {
+    "OpenStreetMap": osmLayer,
+    "Google Maps": gmapLayer,
+    "GaoDe Map": amapLayer,
+    "QQ Map": qmapLayer,
+    "<strike>Baidu Map</strike>": bmapLayer
+};
+
+var overlayMaps = {
+    "Graticules 30": grat30Layer,
+    "Graticules 10": grat10Layer,
+    "Natural Earth I": tneLayer,
+    "USGS Elev.": nmapLayer
+};
+
+
 var init_lat = 39.94942;
 var init_lng = 116.32838;
 
-var map = new L.Map("map", {
-  center: [init_lat, init_lng],
-  zoom: 5
+var map = new L.Map('map', {
+    center: [init_lat, init_lng],
+    zoom: 5
 });
 
-//L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>",
-//maxZoom: 17}).addTo(map);
+// add one of basemap layers before overlay layers, 
+// in order to make every basemap attribution after overlay attribution
+tneLayer.addTo(map);
+amapLayer.addTo(map);
 
-L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
-attribution: "&copy; <a href='http://lbs.amap.com/home/terms/'>高德地图 AMap(AutoNavi)</a>",
-maxZoom: 18, minZoom: 5}).addTo(map);
+// ControlLayer must be initialized after map layers
+var layerCtrl = L.control.layers(baseMaps, overlayMaps);
+layerCtrl.addTo(map);
 
-L.tileLayer("http://tiles.commology.com/v1/world/{z}/{x}/{y}/tile.png", {attribution: "&copy Tiles by Commology", maxZoom: 25}).addTo(map);
 
 map.setView(new L.LatLng(init_lat, init_lng), 7);
 
-var marker = L.marker([init_lat, init_lng]).addTo(map);
+var marker = L.marker([init_lat, init_lng]);
+
+marker.addTo(map);
 
 marker.bindPopup("<b>Hello you!</b><br>I'm from Beijing.");
 
