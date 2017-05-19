@@ -33,7 +33,8 @@ strata.layer(name)
         }));
 }
 
-addStrataLayer('world', 'mapnik/geotiff_web_merc.xml');
+addStrataLayer('naturalearth', 'mapnik/geotiff_naturalearth.xml');
+addStrataLayer('t2m', 'mapnik/geotiff_grib_t2m.xml');
 addStrataLayer('grat30', 'mapnik/graticules_30.xml');
 addStrataLayer('grat10', 'mapnik/graticules_10.xml');
 

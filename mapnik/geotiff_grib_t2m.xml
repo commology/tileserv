@@ -6,11 +6,11 @@
       <RasterSymbolizer opacity="0.5" />
     </Rule>
   </Style>
-  <Layer name="world" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
+  <Layer name="t2m" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
     <StyleName>My Style</StyleName>
     <Datasource>
       <Parameter name="type">gdal</Parameter>
-      <Parameter name="file">../data/NE1_LR_LC_SR-web_merc-transparent.tif</Parameter>
+      <Parameter name="file">../data/grib_t2m.tif</Parameter>
       <Parameter name="nodata">0</Parameter>
     </Datasource>
   </Layer>

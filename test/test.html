@@ -19,9 +19,9 @@
 <script src="baidu.js" type="text/javascript"></script>
 -->
 <script src="https://api.map.baidu.com/getscript?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&services=&t=20170511202040"></script>
-<script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
-<script src="leaflet.TencentLayer.js" type="text/javascript"></script>
-<script src="leaflet.ChineseWtmsProviders.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.BaiduLayer.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.TencentLayer.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js" type="text/javascript"></script>
 <style type="text/css">
@@ -93,8 +93,7 @@ var nmapLayer = L.tileLayer(nmapUrl, {
     attribution: '&copy; <a href="http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer" target="_blank">USGS</a> Elevation'
 });
 
-var grat30Url = 'http://127.0.0.1:8111/grat30/{z}/{x}/{y}/tile.png';
-//var grat30Url = 'http://tiles.commology.com/v1/grat30/{z}/{x}/{y}/tile.png';
+var grat30Url = 'http://tiles.commology.com/v1/grat30/{z}/{x}/{y}/tile.png';
 var grat30Layer = L.tileLayer(grat30Url, {
     id: 'grat30',
     maxZoom: 25,
@@ -102,8 +101,7 @@ var grat30Layer = L.tileLayer(grat30Url, {
     attribution: ''
 });
 
-var grat10Url = 'http://127.0.0.1:8111/grat10/{z}/{x}/{y}/tile.png';
-//var grat10Url = 'http://tiles.commology.com/v1/grat10/{z}/{x}/{y}/tile.png';
+var grat10Url = 'http://tiles.commology.com/v1/grat10/{z}/{x}/{y}/tile.png';
 var grat10Layer = L.tileLayer(grat10Url, {
     id: 'grat10',
     maxZoom: 25,
@@ -145,13 +143,20 @@ return gibsLayer;
 var gibsTerraTrueColorLayer = addGibsLayer('MODIS_Terra_CorrectedReflectance_TrueColor', 'jpg');
 var gibsAquaTrueColorLayer  = addGibsLayer('MODIS_Aqua_CorrectedReflectance_TrueColor', 'jpg');
 
-var tneUrl = 'http://127.0.0.1:8111/world/{z}/{x}/{y}/tile.png';
-//var tneUrl = 'http://tiles.commology.com/v1/world/{z}/{x}/{y}/tile.png';
-var tneLayer = L.tileLayer(tneUrl, {
-    id: 'tne',
+var neUrl = 'http://tiles.commology.com/v1/naturalearth/{z}/{x}/{y}/tile.png';
+var neLayer = L.tileLayer(neUrl, {
+    id: 'ne',
     maxZoom: 25,
     detectRetina: true,
-    attribution: '&#x269D; Tiles by FynnBear'
+    attribution: '&#x269D; Tiles by FynnBear; Data - NaturalEarthI'
+});
+
+var t2mUrl = 'http://tiles.commology.com/v1/t2m/{z}/{x}/{y}/tile.png';
+var t2mLayer = L.tileLayer(t2mUrl, {
+    id: 't2m',
+    maxZoom: 25,
+    detectRetina: true,
+    attribution: '&#x269D; Tiles by FynnBear; Data - ECMWF forecast'
 });
 
 var baseMaps = {
@@ -164,7 +169,8 @@ var baseMaps = {
 
 var overlayMaps = {
     "USGS Elev.": nmapLayer,
-    "Natural Earth I": tneLayer,
+    "Natural Earth I": neLayer,
+    "ECMWF 2m temperature": t2mLayer,
     "Terra TrueColor": gibsTerraTrueColorLayer,
     "Aqua TrueColor": gibsAquaTrueColorLayer,
     "Graticules 30": grat30Layer,
@@ -182,7 +188,7 @@ var map = new L.Map('map', {
 
 // add one of basemap layers before overlay layers, 
 // in order to make every basemap attribution after overlay attribution
-tneLayer.addTo(map);
+neLayer.addTo(map);
 amapLayer.addTo(map);
 
 // ControlLayer must be initialized after map layers
