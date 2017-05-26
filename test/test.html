@@ -19,9 +19,10 @@
 <script src="baidu.js" type="text/javascript"></script>
 -->
 <script src="https://api.map.baidu.com/getscript?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&services=&t=20170511202040"></script>
-<script src="/IoT/js/leaflet.BaiduLayer.js" type="text/javascript"></script>
-<script src="/IoT/js/leaflet.TencentLayer.js" type="text/javascript"></script>
-<script src="/IoT/js/leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
+<script src="leaflet.Graticule.js" type="text/javascript"></script>
+<script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
+<script src="leaflet.TencentLayer.js" type="text/javascript"></script>
+<script src="leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js" type="text/javascript"></script>
 <style type="text/css">
@@ -85,7 +86,6 @@ var qmapLayer = L.tileLayer.chinaProvider(qmapStr, {
 });
 
 var nmapUrl = 'http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}';
-var nmapUrl = 'http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}';
 var nmapLayer = L.tileLayer(nmapUrl, {
     id: 'nmap',
     minZoom: 1,
@@ -93,17 +93,19 @@ var nmapLayer = L.tileLayer(nmapUrl, {
     attribution: '&copy; <a href="http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer" target="_blank">USGS</a> Elevation'
 });
 
-var grat30Url = 'http://tiles.commology.com/v1/grat30/{z}/{x}/{y}/tile.png';
-var grat30Layer = L.tileLayer(grat30Url, {
-    id: 'grat30',
+var admin1Url = 'http://127.0.0.1:8111/admin_1/{z}/{x}/{y}/tile.png';
+//var admin1Url = 'http://tiles.commology.com/v1/admin_1/{z}/{x}/{y}/tile.png';
+var admin1Layer = L.tileLayer(admin1Url, {
+    id: 'admin_1_provinces',
     maxZoom: 25,
     detectRetina: true,
     attribution: ''
 });
 
-var grat10Url = 'http://tiles.commology.com/v1/grat10/{z}/{x}/{y}/tile.png';
-var grat10Layer = L.tileLayer(grat10Url, {
-    id: 'grat10',
+var admin0Url = 'http://127.0.0.1:8111/admin_0/{z}/{x}/{y}/tile.png';
+//var admin0Url = 'http://tiles.commology.com/v1/admin_0/{z}/{x}/{y}/tile.png';
+var admin0Layer = L.tileLayer(admin0Url, {
+    id: 'admin_0_countries',
     maxZoom: 25,
     detectRetina: true,
     attribution: ''
@@ -116,10 +118,11 @@ format = format || 'png';
 //var gibsUrl = "http://map1{s}.vis.earthdata.nasa.gov/wmts-webmerc/{imageryLayer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.jpg";
 var gibsUrl = "http://gibs.earthdata.nasa.gov/wmts/epsg3857/best/{imageryLayer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.{format}";
 var gibsLayer = L.tileLayer(gibsUrl, {
+    id: 'gibs_' + imageryLayer,
     imageryLayer: imageryLayer,
     tileMatrixSet: "GoogleMapsCompatible_Level9",
     maxZoom: 9,
-    time: "2013-11-04",
+    time: "2017-05-18",
     tileSize: 256,
     format: format,
     subdomains: "abc",
@@ -143,6 +146,31 @@ return gibsLayer;
 var gibsTerraTrueColorLayer = addGibsLayer('MODIS_Terra_CorrectedReflectance_TrueColor', 'jpg');
 var gibsAquaTrueColorLayer  = addGibsLayer('MODIS_Aqua_CorrectedReflectance_TrueColor', 'jpg');
 
+function addSsecLayer(productName) {
+
+var ssecUrl = 'http://wms.ssec.wisc.edu/tiles/{product}/{z}/{x}/{y}.png';
+var ssecLayer = L.tileLayer(ssecUrl, {
+    id: 'ssec_' + productName,
+    maxZoom: 25,
+    opacity: 0.5,
+    product: productName,
+    detectRetina: true,
+    attribution: "<a href='http://wms.ssec.wis.edu/doc/dataaccess.php'>SSEC</a> WISC."
+});
+return ssecLayer;
+
+}
+
+ssecNppTcLayer = addSsecLayer('GLOBALnpptc');
+
+ssecH8B01Layer = addSsecLayer('HIMAWARI-B01');
+ssecH8B02Layer = addSsecLayer('HIMAWARI-B02');
+ssecH8B03Layer = addSsecLayer('HIMAWARI-B03');
+ssecH8B08Layer = addSsecLayer('HIMAWARI-B08');
+ssecH8B10Layer = addSsecLayer('HIMAWARI-B10');
+ssecH8B13Layer = addSsecLayer('HIMAWARI-B13');
+
+
 var neUrl = 'http://tiles.commology.com/v1/naturalearth/{z}/{x}/{y}/tile.png';
 var neLayer = L.tileLayer(neUrl, {
     id: 'ne',
@@ -151,15 +179,29 @@ var neLayer = L.tileLayer(neUrl, {
     attribution: '&#x269D; Tiles by FynnBear; Data - NaturalEarthI'
 });
 
-var t2mUrl = 'http://tiles.commology.com/v1/t2m/{z}/{x}/{y}/tile.png';
+var t2mUrl = 'http://127.0.0.1:8111/t2m/{z}/{x}/{y}/tile.png';
+//var t2mUrl = 'http://tiles.commology.com/v1/t2m/{z}/{x}/{y}/tile.png';
 var t2mLayer = L.tileLayer(t2mUrl, {
     id: 't2m',
+    tileSize: 256,
     maxZoom: 25,
     detectRetina: true,
     attribution: '&#x269D; Tiles by FynnBear; Data - ECMWF forecast'
 });
 
+var graticuleLayer = L.latlngGraticule({
+    zoomInterval: [
+        {start: 2, end: 3, interval: 30},
+        {start: 4, end: 4, interval: 10},
+        {start: 5, end: 7, interval: 5},
+        {start: 8, end: 10, interval: 1}
+    ],
+    showLabel: true
+});
+
+
 var baseMaps = {
+    "None" : L.tileLayer(''),
     "OpenStreetMap": osmLayer,
     "Google Maps": gmapLayer,
     "GaoDe Map": amapLayer,
@@ -170,11 +212,19 @@ var baseMaps = {
 var overlayMaps = {
     "USGS Elev.": nmapLayer,
     "Natural Earth I": neLayer,
-    "ECMWF 2m temperature": t2mLayer,
     "Terra TrueColor": gibsTerraTrueColorLayer,
     "Aqua TrueColor": gibsAquaTrueColorLayer,
-    "Graticules 30": grat30Layer,
-    "Graticules 10": grat10Layer
+    "NPP TrueColor": ssecNppTcLayer,
+    "Himawari-8 B01": ssecH8B01Layer,
+    "Himawari-8 B02": ssecH8B02Layer,
+    "Himawari-8 B03": ssecH8B03Layer,
+    "Himawari-8 B08": ssecH8B08Layer,
+    "Himawari-8 B10": ssecH8B10Layer,
+    "Himawari-8 B13": ssecH8B13Layer,
+    "ECMWF 2m temperature": t2mLayer,
+    "Provinces": admin1Layer,
+    "Countries": admin0Layer,
+    "Graticule": graticuleLayer
 };
 
 
@@ -188,15 +238,16 @@ var map = new L.Map('map', {
 
 // add one of basemap layers before overlay layers, 
 // in order to make every basemap attribution after overlay attribution
-neLayer.addTo(map);
+t2mLayer.addTo(map);
 amapLayer.addTo(map);
+graticuleLayer.addTo(map);
 
 // ControlLayer must be initialized after map layers
 var layerCtrl = L.control.layers(baseMaps, overlayMaps);
 layerCtrl.addTo(map);
 
 
-map.setView(new L.LatLng(init_lat, init_lng), 7);
+map.setView(new L.LatLng(init_lat, init_lng), 4);
 
 var marker = L.marker([init_lat, init_lng]);
 

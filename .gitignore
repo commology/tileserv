@@ -34,4 +34,4 @@ yarn.lock
 
 # data
 data/*.tif
-
+data/ne_*

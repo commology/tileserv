@@ -24,7 +24,7 @@ strata.layer(name)
         .use(mapnik({
             pathname: mapnik_xml_pathname,
             tileSize: 512,
-            scale: 2
+            scale: 1
         }))
     .route('tile.png')
         .use(dependency(name, 'tile@2x.png'))
@@ -35,8 +35,8 @@ strata.layer(name)
 
 addStrataLayer('naturalearth', 'mapnik/geotiff_naturalearth.xml');
 addStrataLayer('t2m', 'mapnik/geotiff_grib_t2m.xml');
-addStrataLayer('grat30', 'mapnik/graticules_30.xml');
-addStrataLayer('grat10', 'mapnik/graticules_10.xml');
+addStrataLayer('admin_1', 'mapnik/admin_1.xml');
+addStrataLayer('admin_0', 'mapnik/admin_0.xml');
 
 
 // view engine setup
