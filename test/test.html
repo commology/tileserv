@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset='utf-8' />
@@ -8,23 +9,30 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
   integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
   crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
   integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
   crossorigin=""></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 <!--
 <script src="http://api.map.baidu.com/api?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&s=1" type="text/javascript"></script>
 <script src="baidu.js" type="text/javascript"></script>
 -->
 <script src="https://api.map.baidu.com/getscript?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&services=&t=20170511202040"></script>
+<link rel="stylesheet" href="leaflet.Loading.css" />
+<script src="leaflet.Loading.js" type="text/javascript"></script>
 <script src="leaflet.Graticule.js" type="text/javascript"></script>
 <script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
 <script src="leaflet.TencentLayer.js" type="text/javascript"></script>
 <script src="leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 <style type="text/css">
 html,body,#map {
   width: 100%;
@@ -35,9 +43,12 @@ body {
   padding: 0;
   margin: 0;
 }
+</style>
 <title>Yet Another Map ...</title>
+<!--
 <link rel='icon' href='/IoT/favicon.ico' type='image/x-icon' />
 <link rel='shortcut icon' href='/IoT/favicon.ico' type='image/x-icon' />
+-->
 </style>
 </head>
 <body>
@@ -93,6 +104,7 @@ var nmapLayer = L.tileLayer(nmapUrl, {
     attribution: '&copy; <a href="http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer" target="_blank">USGS</a> Elevation'
 });
 
+var gmapStr = 'Google.Normal.Map';
 var admin1Url = 'http://127.0.0.1:8111/admin_1/{z}/{x}/{y}/tile.png';
 //var admin1Url = 'http://tiles.commology.com/v1/admin_1/{z}/{x}/{y}/tile.png';
 var admin1Layer = L.tileLayer(admin1Url, {
@@ -246,6 +258,18 @@ graticuleLayer.addTo(map);
 var layerCtrl = L.control.layers(baseMaps, overlayMaps);
 layerCtrl.addTo(map);
 
+var scaleCtrl = L.control.scale();
+scaleCtrl.addTo(map);
+
+var fullscreenCtrl = L.control.fullscreen();
+map.addControl(fullscreenCtrl);
+
+var loadingCtrl = L.control.loading({
+    delayIndicator: 0.2000,
+    separate: true,
+    position: 'topleft'
+});
+map.addControl(loadingCtrl);
 
 map.setView(new L.LatLng(init_lat, init_lng), 4);
 
@@ -260,6 +284,12 @@ function onMapClick(e) {
 }
 
 map.on('click', onMapClick);
+
+var msgHello = '<center><b>FynnBear dogfood</b><br/><em>Never believe this works!</em></center>';
+toastr.options = {
+    positionClass: 'toast-top-center'
+};
+toastr.info(msgHello);
 
 </script>
 </body>

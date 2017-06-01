@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map>
+<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
+  <Style name="My Style">
+    <Rule>
+      <LineSymbolizer stroke="red" stroke-width="5" stroke-opacity="1" stroke-dasharray="10,8" />
+    </Rule>
+  </Style>
+  <Layer name="graticules_10" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over">
+    <StyleName>My Style</StyleName>
+    <Datasource>
+      <Parameter name="type">shape</Parameter>
+      <Parameter name="file">../data/ne_10m_admin_0_countries-web_merc.shp</Parameter>
+    </Datasource>
+  </Layer>
+</Map>
