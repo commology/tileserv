@@ -23,12 +23,18 @@
 <script src="baidu.js" type="text/javascript"></script>
 -->
 <script src="https://api.map.baidu.com/getscript?v=2.0&ak=sLlOHXz6Ge7fGtRp8In6GXZQONASMGjB&services=&t=20170511202040"></script>
-<link rel="stylesheet" href="leaflet.Loading.css" />
-<script src="leaflet.Loading.js" type="text/javascript"></script>
-<script src="leaflet.Graticule.js" type="text/javascript"></script>
-<script src="leaflet.BaiduLayer.js" type="text/javascript"></script>
-<script src="leaflet.TencentLayer.js" type="text/javascript"></script>
-<script src="leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/IoT/css/leaflet.Loading.css" />
+<script src="/IoT/js/leaflet.Loading.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/IoT/css/leaflet.ZoomSlider.css" />
+<script src="/IoT/js/leaflet.ZoomSlider.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/IoT/css/leaflet.MousePosition.css" />
+<script src="/IoT/js/leaflet.MousePosition.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/IoT/css/leaflet.Credits.css" />
+<script src="/IoT/js/leaflet.Credits.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.Graticule.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.BaiduLayer.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.TencentLayer.js" type="text/javascript"></script>
+<script src="/IoT/js/leaflet.ChineseWmtsProviders.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript"></script>
@@ -105,8 +111,7 @@ var nmapLayer = L.tileLayer(nmapUrl, {
 });
 
 var gmapStr = 'Google.Normal.Map';
-var admin1Url = 'http://127.0.0.1:8111/admin_1/{z}/{x}/{y}/tile.png';
-//var admin1Url = 'http://tiles.commology.com/v1/admin_1/{z}/{x}/{y}/tile.png';
+var admin1Url = 'http://tiles.commology.com/v1/admin_1/{z}/{x}/{y}/tile.png';
 var admin1Layer = L.tileLayer(admin1Url, {
     id: 'admin_1_provinces',
     maxZoom: 25,
@@ -114,8 +119,7 @@ var admin1Layer = L.tileLayer(admin1Url, {
     attribution: ''
 });
 
-var admin0Url = 'http://127.0.0.1:8111/admin_0/{z}/{x}/{y}/tile.png';
-//var admin0Url = 'http://tiles.commology.com/v1/admin_0/{z}/{x}/{y}/tile.png';
+var admin0Url = 'http://tiles.commology.com/v1/admin_0/{z}/{x}/{y}/tile.png';
 var admin0Layer = L.tileLayer(admin0Url, {
     id: 'admin_0_countries',
     maxZoom: 25,
@@ -183,22 +187,44 @@ ssecH8B10Layer = addSsecLayer('HIMAWARI-B10');
 ssecH8B13Layer = addSsecLayer('HIMAWARI-B13');
 
 
+var strCopyInfo = '&#x269D; Tiles by FynnBear; Data - '
+
 var neUrl = 'http://tiles.commology.com/v1/naturalearth/{z}/{x}/{y}/tile.png';
 var neLayer = L.tileLayer(neUrl, {
     id: 'ne',
     maxZoom: 25,
     detectRetina: true,
-    attribution: '&#x269D; Tiles by FynnBear; Data - NaturalEarthI'
+    attribution: strCopyInfo + 'NaturalEarthI'
 });
 
-var t2mUrl = 'http://127.0.0.1:8111/t2m/{z}/{x}/{y}/tile.png';
-//var t2mUrl = 'http://tiles.commology.com/v1/t2m/{z}/{x}/{y}/tile.png';
-var t2mLayer = L.tileLayer(t2mUrl, {
-    id: 't2m',
+var ec_t2mUrl = 'http://tiles.commology.com/v1/ecmwf_t2m/{z}/{x}/{y}/tile.png';
+var ec_t2mLayer = L.tileLayer(ec_t2mUrl, {
+    id: 'ec_t2m',
     tileSize: 256,
     maxZoom: 25,
+    opacity: 0.8,
     detectRetina: true,
-    attribution: '&#x269D; Tiles by FynnBear; Data - ECMWF forecast'
+    attribution: strCopyInfo + 'ECMWF forecast'
+});
+
+var ec_tpUrl = 'http://tiles.commology.com/v1/ecmwf_tp/{z}/{x}/{y}/tile.png';
+var ec_tpLayer = L.tileLayer(ec_tpUrl, {
+    id: 'ec_tp',
+    tileSize: 256,
+    maxZoom: 25,
+    opacity: 1,
+    detectRetina: true,
+    attribution: strCopyInfo + 'ECMWF forecast'
+});
+
+var ec_gh500Url = 'http://tiles.commology.com/v1/ecmwf_gh500/{z}/{x}/{y}/tile.png';
+var ec_gh500Layer = L.tileLayer(ec_gh500Url, {
+    id: 'ec_gh500',
+    tileSize: 256,
+    maxZoom: 25,
+    opacity: 1,
+    detectRetina: true,
+    attribution: strCopyInfo + 'ECMWF forecast'
 });
 
 var graticuleLayer = L.latlngGraticule({
@@ -210,7 +236,6 @@ var graticuleLayer = L.latlngGraticule({
     ],
     showLabel: true
 });
-
 
 var baseMaps = {
     "None" : L.tileLayer(''),
@@ -233,39 +258,133 @@ var overlayMaps = {
     "Himawari-8 B08": ssecH8B08Layer,
     "Himawari-8 B10": ssecH8B10Layer,
     "Himawari-8 B13": ssecH8B13Layer,
-    "ECMWF 2m temperature": t2mLayer,
+    "ECMWF 2m temperature": ec_t2mLayer,
+    "ECMWF total percip.": ec_tpLayer,
+    "ECMWF geopotential 500mb": ec_gh500Layer,
     "Provinces": admin1Layer,
     "Countries": admin0Layer,
     "Graticule": graticuleLayer
 };
 
+/*
+var baseMaps = [
+  {
+    name: "None",
+    layer: L.tileLayer('')
+  },
+  {
+    name: "OpenStreetMap",
+    layer: osmLayer
+  },
+  {
+    name: "Google Maps",
+    layer: gmapLayer
+  },
+  {
+    active: true,
+    name: "GaoDe Map",
+    layer: amapLayer
+  },
+  {
+    name: "QQ Map",
+    layer: qmapLayer
+  },
+  {
+    name: "<strike>Baidu Map</strike>",
+    layer: bmapLayer
+  }
+];
+
+var overlayMaps = [
+  {
+    name: "Provinces",
+    layer: admin1Layer
+  },
+  {
+    name: "Countries",
+    layer: admin0Layer
+  },
+  {
+    name: "Graticule",
+    layer: graticuleLayer
+  }
+];
+*/
 
 var init_lat = 39.94942;
 var init_lng = 116.32838;
 
 var map = new L.Map('map', {
+    zoomControl: false,
     center: [init_lat, init_lng],
     zoom: 5
 });
 
 // add one of basemap layers before overlay layers, 
 // in order to make every basemap attribution after overlay attribution
-t2mLayer.addTo(map);
+ec_tpLayer.addTo(map);
 amapLayer.addTo(map);
 graticuleLayer.addTo(map);
 
+var creditsCtrl = L.control.credits({
+                                 image: "/IoT/image/FynnBear-40x40.png",
+                                 link: "http://www.commology.com/",
+                                 text: "FynnBear",
+                                 position: 'topleft'
+});
+map.addControl(creditsCtrl);
+
 // ControlLayer must be initialized after map layers
-var layerCtrl = L.control.layers(baseMaps, overlayMaps);
+var layerCtrl = L.control.layers(baseMaps, overlayMaps, {
+                                 position: 'topleft'
+});
 layerCtrl.addTo(map);
 
-var scaleCtrl = L.control.scale();
+var scaleCtrl = L.control.scale({
+                                 position: 'topright'
+});
 scaleCtrl.addTo(map);
 
-var fullscreenCtrl = L.control.fullscreen();
+var fullscreenCtrl = L.control.fullscreen({
+                                 position: 'topright'
+});
 map.addControl(fullscreenCtrl);
 
+var zoomCtrl = L.control.zoomslider({
+                                 position: 'topright'
+});
+zoomCtrl.addTo(map);
+
+function deg_to_dms (deg) {
+   var d = Math.floor(deg);
+   var minfloat = (deg-d)*60;
+   var m = Math.floor(minfloat);
+   var secfloat = (minfloat-m)*60;
+   var s = Math.round(secfloat);
+   // After rounding, the seconds might become 60. These two
+   // if-tests are not necessary if no rounding is done.
+   if (s==60) {
+       m++;
+       s=0;
+   }
+   if (m==60) {
+       d++;
+       m=0;
+   }
+   return ("" + d + "&deg;" + m + "'" + s + '"');
+}
+
+var mposCtrl = L.control.mousePosition({
+                                 emptyString: '-',
+                                 separator: ', ',
+                                 latFormatter: function (deg) { return deg_to_dms(deg); },
+                                 lngFormatter: function (deg) { return deg_to_dms(deg); },
+                                 position: 'bottomleft'
+});
+map.addControl(mposCtrl);
+
 var loadingCtrl = L.control.loading({
-    delayIndicator: 0.2000,
+    delayIndicator: 0.5000,
     separate: true,
     position: 'topleft'
 });
@@ -280,7 +399,7 @@ marker.addTo(map);
 marker.bindPopup("<b>Hello you!</b><br>I'm from Beijing.");
 
 function onMapClick(e) {
-  alert("You clicked the map at " + e.latlng);
+    console.log("You clicked the map at " + e.latlng);
 }
 
 map.on('click', onMapClick);

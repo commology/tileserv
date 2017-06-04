@@ -34,7 +34,9 @@ strata.layer(name)
 }
 
 addStrataLayer('naturalearth', 'mapnik/geotiff_naturalearth.xml');
-addStrataLayer('t2m', 'mapnik/geotiff_grib_t2m.xml');
+addStrataLayer('ecmwf_t2m', 'mapnik/geotiff_dem_grib_t2m.xml');
+addStrataLayer('ecmwf_tp', 'mapnik/geotiff_dem_grib_tp.xml');
+addStrataLayer('ecmwf_gh500', 'mapnik/contour_grib_gh500.xml');
 addStrataLayer('admin_1', 'mapnik/admin_1.xml');
 addStrataLayer('admin_0', 'mapnik/admin_0.xml');
 
