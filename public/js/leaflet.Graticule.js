@@ -132,13 +132,11 @@ L.LatLngGraticule = L.Layer.extend({
 
         this._updateOpacity();
 
-        this._container.appendChild(this._canvas);
+        this._container.onselectstart = L.Util.falseFn;
+        this._container.onmousemove = L.Util.falseFn;
+        this._container.onload = L.Util.bind(this.fire, this, 'load');
 
-        L.extend(this._canvas, {
-            onselectstart: L.Util.falseFn,
-            onmousemove: L.Util.falseFn,
-            onload: L.bind(this._onCanvasLoad, this)
-        });
+        this._container.appendChild(this._canvas);
     },
 
 // 	_animateZoom: function (e) {
@@ -177,10 +175,6 @@ L.LatLngGraticule = L.Layer.extend({
         this.__calcInterval();
 
         this.__draw(true);
-    },
-
-    _onCanvasLoad: function () {
-        this.fire('load');
     },
 
     _updateOpacity: function () {
