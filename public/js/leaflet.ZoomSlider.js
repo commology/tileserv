@@ -40,7 +40,7 @@
                 return this._toY(value);
             },
 
-            // y = k*v + m
+            // y = k * v + m
             _toY: function (value) {
                 return this._k * value + this._m;
             },
@@ -90,18 +90,18 @@
                                       this.options.stepHeight,
                                       this.options.knobHeight);
 
-                map.whenReady(this._initKnob,    this)
-                    .whenReady(this._initEvents,    this)
-                    .whenReady(this._updateSize,    this)
-                    .whenReady(this._updateKnobValue, this)
-                    .whenReady(this._updateDisabled,  this);
+                map.whenReady(this._initKnob,        this)
+                   .whenReady(this._initEvents,      this)
+                   .whenReady(this._updateSize,      this)
+                   .whenReady(this._updateKnobValue, this)
+                   .whenReady(this._updateDisabled,  this);
                 return this._ui.bar;
             },
 
             onRemove: function (map) {
-                map.off('zoomlevelschange',     this._updateSize,    this)
-                    .off('zoomend zoomlevelschange', this._updateKnobValue, this)
-                    .off('zoomend zoomlevelschange', this._updateDisabled,  this);
+                map.off('zoomlevelschange',         this._updateSize,      this)
+                   .off('zoomend zoomlevelschange', this._updateKnobValue, this)
+                   .off('zoomend zoomlevelschange', this._updateDisabled,  this);
             },
 
             _createUI: function () {
@@ -141,14 +141,14 @@
             },
             _initEvents: function () {
                 this._map
-                    .on('zoomlevelschange',     this._updateSize,    this)
+                    .on('zoomlevelschange',         this._updateSize,      this)
                     .on('zoomend zoomlevelschange', this._updateKnobValue, this)
                     .on('zoomend zoomlevelschange', this._updateInfoValue, this)
                     .on('zoomend zoomlevelschange', this._updateDisabled,  this);
 
-                L.DomEvent.on(this._ui.body,  'click', this._onSliderClick, this);
-                L.DomEvent.on(this._ui.zoomIn,  'click', this._zoomIn,    this);
-                L.DomEvent.on(this._ui.zoomOut, 'click', this._zoomOut,     this);
+                L.DomEvent.on(this._ui.body,    'click', this._onSliderClick, this);
+                L.DomEvent.on(this._ui.zoomIn,  'click', this._zoomIn,        this);
+                L.DomEvent.on(this._ui.zoomOut, 'click', this._zoomOut,       this);
 
                 this._knob.on('dragend', this._updateMapZoom, this);
             },
@@ -205,7 +205,7 @@
                     L.DomUtil.addClass(this._ui.zoomOut, className);
                 }
                 if (zoomLevel === this._map.getMaxZoom()) {
-                    L.DomUtil.addClass(this._ui.zoomIn, className);
+                    L.DomUtil.addClass(this._ui.zoomIn,  className);
                 }
             }
         });
