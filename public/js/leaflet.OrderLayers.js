@@ -98,6 +98,7 @@ L.Control.Layers.include({
 
         $(this._overlaysList).sortable({
            cursor: 'move',
+           handle: 'a',
            update: function (event, ui) {
                var items = $(this).children();
                for (var i = 0; i < items.length; i++) {
@@ -106,14 +107,14 @@ L.Control.Layers.include({
                    layerLabel = $($(item).find('a')[0]).attr('label');
                    var key = 'L:' + _getKey(layerID, layerLabel);
                    dictOverlayZIndex[key] = vOverlayZIndexBegin + i + 1;
-                   _instance.update();
+                   _instance.update(true);
                }
            }
         }).disableSelection();
     },
 
     _base_update: L.Control.Layers.prototype._update,
-    _update: function(no_update_base) {
+    _update: function(skip_update_base) {
         for (var i = 0; i < this._layers.length; i++) {
              var l = this._layers[i];
              if (l.overlay) {
@@ -121,15 +122,15 @@ L.Control.Layers.include({
                  l.layer.setZIndex(dictOverlayZIndex[key]);
              }
         }
-        if (!no_update_base) this._base_update();
+        if (!skip_update_base) this._base_update();
         if (this.options.sortLayers) {
             this._layers.sort(L.bind(function (a, b) {
                 return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
              }, this));
         }
     },
-    update: function () {
-        this._update(true);
+    update: function (skip_update_base) {
+        this._update(skip_update_base);
     },
 
     _base_addItem: L.Control.Layers.prototype._addItem,
@@ -153,7 +154,8 @@ L.Control.Layers.include({
             id: 'arrow_' + obj.layer.options.id,
             layer: obj.layer.options.id,
             label: obj.name,
-            text: '↕'
+            class: 'leaflet-control-sortable-knob',
+            text: ' ↕ '
         });
         ctrl.click(function () {
             console.log('DRAG ' + $(this).attr("layer"));
